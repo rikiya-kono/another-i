@@ -1,36 +1,135 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Another I - もう一人の私
 
-## Getting Started
+あなたの思考を整理し、言語化を助けるAI思考パートナー。
 
-First, run the development server:
+## 🚀 はじめに
 
+### 必要なもの
+- Node.js 18以上
+- AIのAPIキー（OpenAI / Anthropic / Google のいずれか）
+
+### インストール
 ```bash
+cd another-i-app
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ブラウザで http://localhost:3000 を開いてください。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🎯 基本的な使い方
 
-## Learn More
+### 1. AI設定
+1. 左上の **歯車アイコン** をクリック
+2. プロバイダーを選択（OpenAI / Claude / Gemini）
+3. APIキーを入力して「検証」
+4. モデルを選んで「保存」
 
-To learn more about Next.js, take a look at the following resources:
+> 💡 APIキーはブラウザ内にのみ保存され、外部には送信されません
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. 会話を始める
+- 右側のチャットパネルでAIと対話
+- 会話内容は自動で左パネルに保存
+- 会話が進むとタイトルが自動生成される
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 3. 思考ログを確認
+- 中央のエディタパネルに思考ログが表示
+- ペンアイコンで編集モードに切り替え
+- 対話終了後、自動でAIがサマリーを生成
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📁 会話の整理
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### フォルダ管理
+- **新規フォルダ**: 左上の「+」ボタン
+- **リネーム**: フォルダの三点メニュー → 名前を変更
+- **削除**: フォルダの三点メニュー → 削除
+
+### 会話の操作
+- **ピン留め**: 三点メニュー → ピン留め（重要な会話を上部に固定）
+- **移動**: 三点メニュー → 移動先を選択
+- **削除**: 三点メニュー → 削除
+
+> 💡 「次回から確認しない」にチェックを入れると、削除確認が省略されます。
+> 設定から「確認を復活」で元に戻せます。
+
+---
+
+## 🔍 検索機能
+
+**Cmd+K**（Mac）/ **Ctrl+K**（Windows）で全会話横断検索
+
+- タイトル・内容を同時に検索
+- 結果をクリックで該当会話にジャンプ
+
+---
+
+## 🏷️ タグ機能
+
+会話にタグ（ラベル）を付けて分類できます。
+
+1. チャットパネル右上の **タグアイコン** をクリック
+2. 新しいタグを追加、または既存タグを選択
+3. タグはエクスプローラーの会話名の下に表示
+
+---
+
+## 📤 インポート・エクスポート
+
+### ChatGPTからインポート
+1. ChatGPT設定 → データコントロール → エクスポート
+2. ダウンロードしたファイルから `conversations.json` を取得
+3. Another I の「インポート」ボタンでアップロード
+
+### エクスポート
+- **Markdown形式**: 人間が読みやすい形式
+- **JSON形式**: 再インポート可能なバックアップ
+
+---
+
+## ⌨️ キーボードショートカット
+
+| ショートカット | 動作 |
+|---------------|------|
+| `Cmd/Ctrl + K` | 検索を開く |
+| `Cmd/Ctrl + N` | 新規会話 |
+| `Escape` | 検索を閉じる |
+
+---
+
+## ⚙️ レイアウト設定
+
+設定画面で配置を変更できます：
+
+- **レポート | チャット**: 中央にエディタ、右にチャット
+- **チャット | レポート**: 中央にチャット、右にエディタ
+
+---
+
+## 🔒 プライバシー
+
+- すべてのデータはブラウザ内（localStorage）に保存
+- サーバーへのデータ送信なし
+- APIキーはあなたのブラウザにのみ存在
+- AI API呼び出しはあなたのAPIキーで直接実行
+
+---
+
+## 📝 今後の予定
+
+- [ ] ストリーミング応答
+- [ ] ノート間リンク（`[[]]` 記法）
+- [ ] グラフビュー
+- [ ] PDFエクスポート
+
+---
+
+## 💬 コンセプト
+
+> **「もう一人の自分」**との対話を通じて、言葉にならない思いを言語化し、新しい自分を発見するためのツール。
+
+日記でも相談でも、ただ話を聞いてほしいときでも。
+Another I は、あなたの思考の整理を静かにサポートします。
