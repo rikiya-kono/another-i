@@ -653,11 +653,11 @@ export default function Home() {
                     </>
                 ) : (
                     <>
-                        <ResizablePanel defaultSize={35} minSize={25} maxSize={50}>
+                        <ResizablePanel defaultSize={50} minSize={30}>
                             {chatPanel}
                         </ResizablePanel>
                         <ResizableHandle withHandle />
-                        <ResizablePanel defaultSize={50} minSize={30}>
+                        <ResizablePanel defaultSize={35} minSize={25} maxSize={50}>
                             {editorPanel}
                         </ResizablePanel>
                     </>
