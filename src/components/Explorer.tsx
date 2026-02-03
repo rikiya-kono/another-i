@@ -39,6 +39,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { HelpDialog } from '@/components/HelpDialog';
 
 interface ConversationTag {
     id: string;
@@ -220,6 +221,7 @@ export function Explorer({
                     <span className="font-semibold text-sm">Another I</span>
                 </div>
                 <div className="flex items-center gap-1">
+                    <HelpDialog />
                     {settingsSlot}
                     <Button
                         variant="ghost"
