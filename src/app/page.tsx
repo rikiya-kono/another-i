@@ -65,7 +65,7 @@ export default function Home() {
     } = useAISettings();
 
     // Layout state
-    const [layoutMode, setLayoutMode] = useState<LayoutMode>('editor-first');
+    const [layoutMode, setLayoutMode] = useState<LayoutMode>('chat-first');
 
     // Conversation state
     const [folders, setFolders] = useState<Folder[]>([
