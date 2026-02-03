@@ -77,6 +77,32 @@ export function HelpDialog({ trigger }: HelpDialogProps) {
 
                     <ScrollArea className="max-h-[60vh]">
                         <div className="px-6 py-4 space-y-6 text-sm">
+                            {/* About This App */}
+                            <section className="pb-4 border-b">
+                                <h3 className="text-lg font-semibold mb-3">✨ Another I とは？</h3>
+                                <div className="space-y-3 text-muted-foreground">
+                                    <p>
+                                        <strong className="text-foreground">「もう一人の私」</strong>との対話を通じて、
+                                        思考を言語化し、整理するためのアプリです。
+                                    </p>
+                                    <p>
+                                        日記を書くように、友人に相談するように、AIと対話することで、
+                                        頭の中の漠然としたモヤモヤを言葉にできます。
+                                    </p>
+                                    <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
+                                        <p className="text-xs">
+                                            💭 <strong>使い方の例</strong><br />
+                                            「今日あったことを話したい」「仕事の優先順位で悩んでる」「アイデアを整理したい」<br />
+                                            何でも話しかけてみてください。AIがあなたの思考の整理をサポートします。
+                                        </p>
+                                    </div>
+                                    <p className="text-xs">
+                                        対話の内容は自動で<strong>思考ログ</strong>として整理・要約され、
+                                        後から振り返ることができます。あなただけの思考の記録が蓄積されていきます。
+                                    </p>
+                                </div>
+                            </section>
+
                             {/* Quick Start */}
                             <section>
                                 <h3 className="text-lg font-semibold mb-3">🚀 はじめに</h3>
