@@ -85,7 +85,7 @@ function WelcomeMessage() {
             </div>
             <h1 className="text-2xl font-bold mb-3">Welcome to Another I</h1>
             <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                右側のチャットで対話を始めると、<br />
+                隣のチャットで対話を始めると、<br />
                 あなたの思考がここに整理されていきます。
             </p>
             <div className="flex flex-col gap-2 text-sm text-muted-foreground">
