@@ -79,6 +79,7 @@ export default function Home() {
     const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const abortControllerRef = useRef<AbortController | null>(null);
     const isLoadedRef = useRef(false);
 
     // Load data from localStorage
@@ -422,13 +423,17 @@ export default function Home() {
             const currentConv = folders.flatMap(f => f.conversations).find(c => c.id === convIdToUpdate);
             const allMessages = [...(currentConv?.messages || []), userMessage];
 
+            const abortController = new AbortController();
+            abortControllerRef.current = abortController;
+
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     messages: allMessages.map(m => ({ role: m.role, content: m.content })),
                     settings: aiSettings
-                })
+                }),
+                signal: abortController.signal
             });
 
             const data = await response.json();
@@ -518,7 +523,12 @@ export default function Home() {
                 })();
             }
 
-        } catch (error) {
+        } catch (error: unknown) {
+            // Check if it's an abort error
+            if (error instanceof Error && error.name === 'AbortError') {
+                console.log('Generation was stopped by user');
+                return;
+            }
             console.error('Failed to send message:', error);
             const errorMessage: Message = {
                 id: `msg-${Date.now()}-error`,
@@ -538,7 +548,75 @@ export default function Home() {
         }
 
         setIsLoading(false);
+        abortControllerRef.current = null;
     }, [activeConversationId, folders, aiSettings]);
+
+    // Handle stop generation
+    const handleStopGeneration = useCallback(() => {
+        if (abortControllerRef.current) {
+            abortControllerRef.current.abort();
+            abortControllerRef.current = null;
+        }
+        setIsLoading(false);
+    }, []);
+
+    // Handle regenerate response
+    const handleRegenerateResponse = useCallback(() => {
+        if (!activeConversationId) return;
+
+        const conv = folders.flatMap(f => f.conversations).find(c => c.id === activeConversationId);
+        if (!conv || conv.messages.length === 0) return;
+
+        // Find the last user message
+        const lastUserMessageIndex = conv.messages.map((m, i) => ({ role: m.role, index: i }))
+            .filter(m => m.role === 'user')
+            .pop()?.index;
+
+        if (lastUserMessageIndex === undefined) return;
+
+        // Remove all messages after the last user message (i.e., remove AI responses)
+        const messagesUpToLastUser = conv.messages.slice(0, lastUserMessageIndex);
+        const lastUserMessage = conv.messages[lastUserMessageIndex];
+
+        setFolders(prev => prev.map(folder => ({
+            ...folder,
+            conversations: folder.conversations.map(c =>
+                c.id === activeConversationId
+                    ? { ...c, messages: messagesUpToLastUser }
+                    : c
+            )
+        })));
+
+        // Re-send the last user message
+        setTimeout(() => handleSendMessage(lastUserMessage.content), 0);
+    }, [activeConversationId, folders, handleSendMessage]);
+
+    // Handle edit message
+    const handleEditMessage = useCallback((messageId: string, newContent: string) => {
+        if (!activeConversationId) return;
+
+        const conv = folders.flatMap(f => f.conversations).find(c => c.id === activeConversationId);
+        if (!conv) return;
+
+        // Find the message index
+        const messageIndex = conv.messages.findIndex(m => m.id === messageId);
+        if (messageIndex === -1) return;
+
+        // Keep messages up to (but not including) the edited message
+        const messagesBeforeEdit = conv.messages.slice(0, messageIndex);
+
+        setFolders(prev => prev.map(folder => ({
+            ...folder,
+            conversations: folder.conversations.map(c =>
+                c.id === activeConversationId
+                    ? { ...c, messages: messagesBeforeEdit }
+                    : c
+            )
+        })));
+
+        // Send the edited message
+        setTimeout(() => handleSendMessage(newContent), 0);
+    }, [activeConversationId, folders, handleSendMessage]);
 
     // Handle content change in editor
     const handleContentChange = useCallback((content: string) => {
@@ -583,6 +661,9 @@ export default function Home() {
             messages={activeConversation?.messages || []}
             onSendMessage={handleSendMessage}
             onNewConversation={handleNewConversation}
+            onStopGeneration={handleStopGeneration}
+            onRegenerateResponse={handleRegenerateResponse}
+            onEditMessage={handleEditMessage}
             isLoading={isLoading}
             isConfigured={!!aiSettings?.apiKey}
             providerName={aiSettings?.provider}
